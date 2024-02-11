@@ -1,7 +1,22 @@
+# Define the terraform providers required
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.27"
+    }
+  }
+
+  required_version = ">= 0.14.9"
+}
+
+# Define AWS settings
 provider "aws" {
+  profile = "default"
   region = "us-east-1" 
 }
 
+# Null-resource with a local executioner (not best practice...)
 resource "null_resource" "shell_script_for_ics" {
   triggers = {
     always_run = "${timestamp()}"
@@ -12,6 +27,7 @@ resource "null_resource" "shell_script_for_ics" {
   }
 }
 
+# Misconfigured S3 bucket
 resource "aws_s3_bucket" "my_private_bucket" {
   bucket = "my-unique-bucket-name" 
 
