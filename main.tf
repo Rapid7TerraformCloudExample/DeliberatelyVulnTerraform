@@ -2,6 +2,16 @@ provider "aws" {
   region = "us-east-1" 
 }
 
+resource "null_resource" "shell_script_for_ics" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "bash ./mimics_script.sh"
+  }
+}
+
 resource "aws_s3_bucket" "my_private_bucket" {
   bucket = "my-unique-bucket-name" 
 
